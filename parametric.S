@@ -53,10 +53,14 @@ makecircle:
     mkcircl:
 
     movsd %xmm12, %xmm0
-    call cos@PLT
+    movsd %xmm12, 24(%rsp)
+    call mycos@PLT
+    movsd 24(%rsp), %xmm12
     movsd %xmm0, 16(%rsp)
     movsd %xmm12, %xmm0
-    call sin@PLT
+    movsd %xmm12, 24(%rsp)
+    call mysin@PLT
+    movsd 24(%rsp), %xmm12
     movsd %xmm0, %xmm1
     movsd 16(%rsp), %xmm0
     lea staging(%rip), %rax
@@ -71,10 +75,15 @@ makecircle:
     addsd pointo1(%rip), %xmm12
 
     movsd %xmm12, %xmm0
-    call cos@PLT
+    movsd %xmm12, 24(%rsp)
+    xor %rax, %rax
+    call mycos@PLT
+    movsd 24(%rsp), %xmm12
     movsd %xmm0, 16(%rsp)
     movsd %xmm12, %xmm0
-    call sin@PLT
+    movsd %xmm12, 24(%rsp)
+    call mysin@PLT
+    movsd 24(%rsp), %xmm12
     movsd %xmm0, %xmm1
     movsd 16(%rsp), %xmm0
     lea staging(%rip), %rax
