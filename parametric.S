@@ -52,10 +52,14 @@ makecircle://Draws a circle on the screen xmm0,xmm1,xmm2 is the center x,y,z, th
     mkcircl://Loop over the many vertices in order to find the edges
     movsd %xmm12, %xmm0
     addsd pio2(%rip), %xmm0
+    movsd %xmm12, 24(%rsp)
     call sin@PLT
+    movsd 24(%rsp),%xmm12
     movsd %xmm0, 16(%rsp)
     movsd %xmm12, %xmm0
+    movsd %xmm12, 24(%rsp)
     call sin@PLT
+    movsd 24(%rsp),%xmm12
     movsd %xmm0, %xmm1
     movsd 16(%rsp), %xmm0
     lea staging(%rip), %rax//sin and cos find the points on the unit circle (x,y), analagous to the points on the new circle, that are to be the vertices
@@ -70,10 +74,14 @@ makecircle://Draws a circle on the screen xmm0,xmm1,xmm2 is the center x,y,z, th
     movsd %xmm12, %xmm0
     xor %rax, %rax
     addsd pio2(%rip), %xmm0
+    movsd %xmm12, 24(%rsp)
     call sin@PLT
+    movsd 24(%rsp),%xmm12
     movsd %xmm0, 16(%rsp)
     movsd %xmm12, %xmm0
+    movsd %xmm12, 24(%rsp)
     call sin@PLT
+    movsd 24(%rsp),%xmm12
     movsd %xmm0, %xmm1
     movsd 16(%rsp), %xmm0
     lea staging(%rip), %rax
