@@ -1,5 +1,5 @@
-all: matrix.o draw.o edgy.o prgrid.o workaround.o bresenham.o manipulations.o parser.o parametric.o
-	gcc -o matrix draw.o workaround.o matrix.o edgy.o prgrid.o bresenham.o manipulations.o parser.o parametric.o -lm -lgcc
+all: matrix.o draw.o edgy.o prgrid.o bresenham.o manipulations.o parser.o parametric.o
+	gcc -o matrix draw.o matrix.o edgy.o prgrid.o bresenham.o manipulations.o parser.o parametric.o -lm -lgcc
 	./matrix
 draw.o: draw.S
 	gcc -c -g draw.S
@@ -17,5 +17,3 @@ parser.o:parser.S
 	gcc -c -g parser.S
 parametric.o: parametric.S
 	gcc -c -g parametric.S
-workaround.o: workaround.c
-	gcc -c -g workaround.c

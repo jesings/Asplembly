@@ -10,6 +10,7 @@
     staging: .double 0,0,0,0
     coords: .double 0,0
     radius: .double 0
+    pio2: .double 1.570796326794896619231321691639751442098584699687552910487
 .bss
     pointers: .quad 0,0
     tempmatrixG: .quad 0
@@ -54,12 +55,13 @@ makecircle:
 
     movsd %xmm12, %xmm0
     movsd %xmm12, 24(%rsp)
-    call mycos@PLT
+    addsd pio2(%rip), %xmm0
+    call sin@PLT
     movsd 24(%rsp), %xmm12
     movsd %xmm0, 16(%rsp)
     movsd %xmm12, %xmm0
     movsd %xmm12, 24(%rsp)
-    call mysin@PLT
+    call sin@PLT
     movsd 24(%rsp), %xmm12
     movsd %xmm0, %xmm1
     movsd 16(%rsp), %xmm0
@@ -77,12 +79,13 @@ makecircle:
     movsd %xmm12, %xmm0
     movsd %xmm12, 24(%rsp)
     xor %rax, %rax
-    call mycos@PLT
+    addsd pio2(%rip), %xmm0
+    call sin@PLT
     movsd 24(%rsp), %xmm12
     movsd %xmm0, 16(%rsp)
     movsd %xmm12, %xmm0
     movsd %xmm12, 24(%rsp)
-    call mysin@PLT
+    call sin@PLT
     movsd 24(%rsp), %xmm12
     movsd %xmm0, %xmm1
     movsd 16(%rsp), %xmm0
