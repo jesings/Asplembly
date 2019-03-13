@@ -153,7 +153,7 @@ savel:
     lea name(%rip), %rdi
     syscall//remove temporary file
     jmp afterl
-circlel:
+circlel://Draw a circle
     call inpstream
     lea buf(%rip), %rdi
     mov $4, %rsi
@@ -168,7 +168,7 @@ circlel:
     mov edgem(%rip), %rdi
     call makecircle
     jmp afterl
-hermitel:
+hermitel://Draw a hermite curve
     call inpstream
     lea buf(%rip), %rdi
     mov $8, %rsi
@@ -185,9 +185,10 @@ hermitel:
     movsd 48(%r8), %xmm1
     movsd 56(%r8), %xmm0
     mov edgem(%rip), %rdi
-    call makehermite
+    lea hermatrix(%rip), %rsi
+    call makespline
     jmp afterl
-bezierl:
+bezierl://Draw a bezier curve
     call inpstream
     lea buf(%rip), %rdi
     mov $8, %rsi
@@ -204,7 +205,8 @@ bezierl:
     movsd 48(%r8), %xmm1
     movsd 56(%r8), %xmm0
     mov edgem(%rip), %rdi
-    call makebezier
+    lea beziermatrix(%rip), %rsi
+    call makespline
     jmp afterl
 inpstream://file descriptor in parsefd(%rip), returns a string in %rax, or 0 if an EOF is encountered
     mov parsefd(%rip), %rdi
