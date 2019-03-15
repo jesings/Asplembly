@@ -118,8 +118,8 @@ makespline://xmm0-7: x0,y0,x1,y1,x2,y2,x3,y3 - Works for both bezier and hermite
     movsd %xmm7, 24(%rsi)//put y coordinates in the ycoord matrix
     push %rdi
     mov tempmatrix4(%rip), %rdi
-    mov tempmatrixG(%rip), %rsi
-    call *%rsi
+    mov tempmatrixG(%rip), %rax
+    call forcematrix
     mov tempmatrix4(%rip), %rdi
     mov tempmatrixX(%rip), %rsi
     call multiplymatrix

@@ -2,12 +2,15 @@
 .global resizematrix
 .global copymatrix
 .global freematrix
-.global identitymatrix
 .global multiplymatrix
 .global printmatrix
 .global matrixstart
+.global forcematrix
+.global identitymatrix
+.global identmatrix
 .global beziermatrix
-.global hermatrix
+.global hermitematrix
+
 .global one
 .global zero
 .data
@@ -27,9 +30,9 @@ scalar:
     .double 1.0
 identmatrix:
     .double 1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1
-bezsplmatrix:
+beziermatrix:
     .double -1,3,-3,1,3,-6,3,0,-3,3,0,0,1,0,0,0
-invhermatrix:
+hermitematrix:
     .double 2,-3,0,1,-2,3,0,0,1,-2,1,0,1,-1,0,0
 //param order rdi, rsi, rdx, rcx, r8, r9
 //return value in rax
@@ -144,51 +147,23 @@ printmatrix://prints matrix %rdi, no return value
     pop %r14
     ret
 
-beziermatrix://turns square matrix %rdi into an bezier matrix
+identitymatrix:
+    lea identmatrix(%rip), %rax
+    call forcematrix
+    ret
+
+forcematrix://turns square matrix %rdi into an bezier matrix, matrix to force is in rax
     movq $4,8(%rdi)
     movq $4,24(%rdi)
     mov (%rdi),%rdi
     push %r14
     mov $0, %r14
     boloop:
-    lea bezsplmatrix(%rip),%rax
     vmovups (%rax,%r14,8),%ymm0
     vmovupd %ymm0, (%rdi,%r14,8)
     add $4, %r14
     cmp $16, %r14
     jne boloop
-    pop %r14
-    ret
-
-hermatrix://turns square matrix %rdi into an inverse hermite matrix
-    movq $4,8(%rdi)
-    movq $4,24(%rdi)
-    mov (%rdi),%rdi
-    push %r14
-    mov $0, %r14
-    holoop:
-    lea invhermatrix(%rip),%rax
-    vmovups (%rax,%r14,8),%ymm0
-    vmovupd %ymm0, (%rdi,%r14,8)
-    add $4, %r14
-    cmp $16, %r14
-    jne holoop
-    pop %r14
-    ret
-
-identitymatrix://turns square matrix %rdi into an identity matrix, no return value
-    movq $4,8(%rdi)
-    movq $4,24(%rdi)
-    mov (%rdi),%rdi
-    push %r14
-    mov $0, %r14
-    ioloop:
-    lea identmatrix(%rip),%rax
-    vmovups (%rax,%r14,8),%ymm0
-    vmovupd %ymm0, (%rdi,%r14,8)
-    add $4, %r14
-    cmp $16, %r14
-    jne ioloop
     pop %r14
     ret
 

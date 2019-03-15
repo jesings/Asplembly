@@ -42,20 +42,16 @@ identl:
     call identitymatrix
     jmp afterl
 scalel:
-    call inpstream
-    lea buf(%rip),%rdi
-    mov $3, %rsi
-    call getargs
-    mov $3, %rdi
-    call convertargs
-    lea args(%rip), %r8
-    movsd 0(%r8), %xmm2
-    movsd 8(%r8), %xmm1
-    movsd 16(%r8), %xmm0
-    mov transm(%rip), %rdi
-    call dilate
+    call args3
+    lea dilate(%rip), %rax
+    call genmanipulate
     jmp afterl
 movel:
+    call args3
+    lea transform(%rip), %rax
+    call genmanipulate
+    jmp afterl
+args3:
     call inpstream
     lea buf(%rip),%rdi
     mov $3, %rsi
@@ -67,8 +63,7 @@ movel:
     movsd 8(%r8), %xmm1
     movsd 16(%r8), %xmm0
     mov transm(%rip), %rdi
-    call transform
-    jmp afterl
+    ret
 rotatel:
     call inpstream
     lea buf(%rip),%rdi
@@ -95,7 +90,7 @@ rotatel:
     lea rotatez(%rip), %rax
     endro:
     mov transm(%rip), %rdi
-    call *%rax
+    call genrotate
     jmp afterl
 applyl:
     mov transm(%rip), %rdi
@@ -169,26 +164,16 @@ circlel://Draw a circle
     call makecircle
     jmp afterl
 hermitel://Draw a hermite curve
-    call inpstream
-    lea buf(%rip), %rdi
-    mov $8, %rsi
-    call getargs
-    mov $8, %rdi
-    call convertargs
-    lea args(%rip), %r8
-    movsd 0(%r8), %xmm7
-    movsd 8(%r8), %xmm6
-    movsd 16(%r8), %xmm5
-    movsd 24(%r8), %xmm4
-    movsd 32(%r8), %xmm3
-    movsd 40(%r8), %xmm2
-    movsd 48(%r8), %xmm1
-    movsd 56(%r8), %xmm0
-    mov edgem(%rip), %rdi
-    lea hermatrix(%rip), %rsi
+    call args8
+    lea hermitematrix(%rip), %rsi
     call makespline
     jmp afterl
 bezierl://Draw a bezier curve
+    call args8
+    lea beziermatrix(%rip), %rsi
+    call makespline
+    jmp afterl
+args8:
     call inpstream
     lea buf(%rip), %rdi
     mov $8, %rsi
@@ -205,9 +190,7 @@ bezierl://Draw a bezier curve
     movsd 48(%r8), %xmm1
     movsd 56(%r8), %xmm0
     mov edgem(%rip), %rdi
-    lea beziermatrix(%rip), %rsi
-    call makespline
-    jmp afterl
+    ret
 inpstream://file descriptor in parsefd(%rip), returns a string in %rax, or 0 if an EOF is encountered
     mov parsefd(%rip), %rdi
     xor %rcx, %rcx

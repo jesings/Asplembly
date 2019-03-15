@@ -21,8 +21,12 @@ bresenham: //something like this: bresenham(int color,int x0,int x1, int y0, int
     shr $8, %rax
     movb %al, colorR(%rip)
     mov %rsi, x0(%rip)
+    neg %rdx
+    add $511, %rdx
     mov %rdx, y0(%rip)
     mov %rcx, x1(%rip)
+    neg %r8
+    add $511, %r8
     mov %r8, y1(%rip)
 #handle wrong direction coords
     mov x0(%rip), %rcx
@@ -142,8 +146,6 @@ o8:
 plot:
 #plot x,y
     mov y(%rip), %r8//this will be the index
-    neg %r8
-    add $511, %r8
     sal $9, %r8
     add x(%rip), %r8
     imul $3, %r8

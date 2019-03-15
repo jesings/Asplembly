@@ -15,7 +15,7 @@ addpoint:
     movdqu %xmm3,48(%rsp)
     movdqu %xmm4,64(%rsp)
     movdqu %xmm5,80(%rsp)
-    mov $10, %rsi
+    mov $1024, %rsi
     call resizematrix
     movdqu 32(%rsp),%xmm0
     movdqu 16(%rsp),%xmm1
